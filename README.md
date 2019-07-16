@@ -17,6 +17,12 @@ Start the stack
 make compose
 ```
 
+Spark WebUI is available at `http://localhost:8080`.
+
+Spark Master at `spark://localhost:7077`.
+
+HDFS Namenode at `hdfs://localhost:9000`.
+
 Get a spark shell
 
 ```bash
