@@ -1,0 +1,8 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/buildpack-deps:bionic-scm
+    steps:
+      - checkout
+      - run: echo "TEST"
