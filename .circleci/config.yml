@@ -13,4 +13,6 @@ jobs:
           name: Start hdfs
           command: |
             docker run -d --name hdfs mini-spark/hdfs
-            docker exec hdfs curl --retry 5 --retry-connrefused http://localhost:50070
+            docker exec hdfs curl --retry 5 http://127.0.0.1:50070
+            docker exec hdfs /hadoop/bin/hdfs -copyFromLocal /hadoop/share/hadoop/common /input
+            docker exec hdfs /hadoop/bin/hdfs -ls /input
