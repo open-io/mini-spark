@@ -5,4 +5,7 @@ jobs:
       - image: circleci/buildpack-deps:bionic-scm
     steps:
       - checkout
-      - run: echo "TEST"
+      - setup_remote_docker
+      - run:
+          name: Build hdfs
+          command: make build_hdfs
