@@ -8,4 +8,4 @@ DFS="${HADOOP_BIN}/hdfs dfs"
 $DFS -mkdir /test
 $DFS -copyFromLocal /hadoop/share/hadoop/common/ /test
 $DFS -find /test
-$DFS -rm -r /
+$DFS -rm -r /test
