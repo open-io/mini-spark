@@ -10,8 +10,5 @@ jobs:
           name: Build hdfs
           command: make build_hdfs
       - run:
-          name: Start hdfs
-          command: |
-            docker run -d --name hdfs mini-spark/hdfs
-            docker exec hdfs /hadoop/bin/hdfs dfsadmin -safemode wait
-            docker exec hdfs /hadoop/bin/hdfs -copyFromLocal /hadoop/share/hadoop/common /input
+          name: Test hdfs
+          command: make test_hdfs

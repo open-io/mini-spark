@@ -12,11 +12,11 @@ RUN curl https://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/
 	tar xf hadoop.tgz && \
 	mv hadoop-${HADOOP_VERSION} hadoop && \
 	rm hadoop.tgz
-	
+
 COPY core-site.xml /hadoop/etc/hadoop/
 COPY hdfs-site.xml /hadoop/etc/hadoop/
 ADD docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-COPY start.sh /
+COPY scripts/ /
 ENV JAVA_HOME=/usr
 
 ENTRYPOINT ["docker-entrypoint.sh"]

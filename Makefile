@@ -20,3 +20,6 @@ spark_shell:
 
 hdfs_shell:
 	docker-compose exec hdfs /bin/bash
+
+test_hdfs:
+	./hdfs/test.sh
