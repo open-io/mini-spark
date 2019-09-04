@@ -34,6 +34,7 @@ wait_cid() {
 }
 test_container() {
     docker exec hdfs-test /wait.sh
+    docker exec hdfs-test /roundtrip.sh
 }
 
 check_result() {

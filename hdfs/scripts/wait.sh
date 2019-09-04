@@ -24,6 +24,3 @@ wait_for_hdfs() {
 }
 
 wait_for_hdfs
-
-$HADOOP_BIN/hdfs dfs -mkdir /test
-$HADOOP_BIN/hdfs dfs -copyFromLocal /hadoop/share/hadoop/common/ /test/
