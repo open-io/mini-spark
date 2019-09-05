@@ -47,10 +47,10 @@ $ hadoop/bin/hdfs dfs -ls /
 
 ### Spark
 
-Access the Spark master container:
+Access the Spark container:
 
 ```bash
-$ docker-compose exec spark-master
+$ docker-compose exec spark
 ```
 
 Spark is available in `/spark`.
