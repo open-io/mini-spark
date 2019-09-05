@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  hdfs:
     docker:
       - image: circleci/buildpack-deps:bionic-scm
     steps:
@@ -12,3 +12,22 @@ jobs:
       - run:
           name: Test hdfs
           command: make test_hdfs
+  spark:
+    docker:
+      - image: circleci/buildpack-deps:bionic-scm
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Spark
+          command: make build_spark
+      - run:
+          name: Test Spark
+          command: make test_spark
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - spark
+      - hdfs
