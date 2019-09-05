@@ -14,6 +14,9 @@ compose:
 spark_shell:
 	docker-compose exec spark /spark/bin/spark-shell --master spark://127.0.0.1:7077
 
+test_spark:
+	./spark/test.sh
+
 hdfs_shell:
 	docker-compose exec hdfs /bin/bash
 
