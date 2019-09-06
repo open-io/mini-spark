@@ -41,6 +41,7 @@ check_result() {
     local result="$1"
     if [[ "$result" != "0" ]]; then
         echo "FAIL: exit code: ${result}"
+        cleanup
         exit $result
     fi
 }
