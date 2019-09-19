@@ -1,0 +1,8 @@
+version: '2'
+services:
+  spark:
+    image: mini-spark/spark
+    depends_on:
+      - openioci
+  openioci:
+    image: openioci/runtime

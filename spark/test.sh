@@ -2,39 +2,18 @@
 
 set -o nounset
 
-IMAGE_NAME="mini-spark/spark"
+_dir="$(dirname "${BASH_SOURCE[0]}")"
+test_dir="$(realpath ${_dir})"
 
-cid_file=$(mktemp --suffix=.cid -u)
-
-image_exists() {
-    docker inspect $1 &>/dev/null
-}
-
-prepare() {
-    if ! image_exists ${IMAGE_NAME}; then
-        echo "ERROR: image ${IMAGE_NAME} does not exist."
-        exit 1
-    fi
-}
+COMPOSE="docker-compose --file ${test_dir}/docker-compose.yml"
 
 run_test_container() {
-    docker run --rm --cidfile=${cid_file} --name spark-test ${IMAGE_NAME}
+    $COMPOSE up -d
 }
 
-wait_cid() {
-    local max=5
-    local attempt=1
-    local result=1
-    while [ $attempt -le $max ]; do
-        [ -f $cid_file ] && break
-        echo "Waiting for container to start..."
-        attempt=$(($attempt+1))
-        sleep 1
-    done
-}
 test_container() {
-    docker exec spark-test /wait.sh
-    docker exec spark-test /roundtrip.sh
+    $COMPOSE exec spark /wait.sh
+    $COMPOSE exec openioci /app/.oio/roundtrip.sh
 }
 
 check_result() {
@@ -47,15 +26,10 @@ check_result() {
 }
 
 cleanup() {
-    echo "Cleanup..."
-    if [ -f $cid_file ]; then
-        docker stop $(cat $cid_file)
-    fi
+    $COMPOSE rm --stop --force
 }
 
-prepare
-run_test_container &
-wait_cid
+run_test_container
 test_container
 check_result $?
 
