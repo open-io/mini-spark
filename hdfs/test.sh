@@ -2,39 +2,38 @@
 
 set -o nounset
 
-IMAGE_NAME="mini-spark/hdfs"
 
-cid_file=$(mktemp --suffix=.cid -u)
+_dir="$(dirname "${BASH_SOURCE[0]}")"
+test_dir="$(realpath ${_dir})"
 
-image_exists() {
-    docker inspect $1 &>/dev/null
-}
-
-prepare() {
-    if ! image_exists ${IMAGE_NAME}; then
-        echo "ERROR: image ${IMAGE_NAME} does not exist."
-        exit 1
-    fi
-}
+COMPOSE="docker-compose --file ${test_dir}/docker-compose.yml"
 
 run_test_container() {
-    docker run --rm --cidfile=${cid_file} --name hdfs-test ${IMAGE_NAME}
+    $COMPOSE up -d
 }
 
-wait_cid() {
-    local max=5
-    local attempt=1
-    local result=1
-    while [ $attempt -le $max ]; do
-        [ -f $cid_file ] && break
-        echo "Waiting for container to start..."
-        attempt=$(($attempt+1))
-        sleep 1
-    done
-}
+
 test_container() {
-    docker exec hdfs-test /wait.sh
-    docker exec hdfs-test /roundtrip.sh
+    $COMPOSE exec hdfs /wait.sh
+    $COMPOSE exec openioci /app/.oio/roundtrip.sh
+    $COMPOSE exec hdfs /hadoop/bin/hdfs dfs -copyFromLocal /hadoop/etc/ /test
+    DISTCP_ARGS="-Dfs.s3a.access.key=demo:demo \
+        -Dfs.s3a.secret.key=DEMO_PASS \
+        -Dfs.s3a.endpoint=172.23.0.2:5000 \
+        -Dfs.s3a.path.style.access=true \
+        -Dfs.s3a.connection.ssl.enabled=false \
+        -Dfs.s3a.attempts.maximum=1 \
+        -Dfs.s3a.connection.timeout=1000 \
+        -Dfs.s3a.retry.limit=1 \
+        -Dfs.s3a.fast.upload=true \
+        -Dfs.s3a.fast.upload=bytebuffer"
+    $COMPOSE exec hdfs /hadoop/bin/hadoop distcp \
+        $DISTCP_ARGS \
+        /test/ s3a://test/
+    $COMPOSE exec hdfs /hadoop/bin/hadoop distcp \
+        $DISTCP_ARGS \
+        -update \
+        s3a://test/ /test/
 }
 
 check_result() {
@@ -47,14 +46,10 @@ check_result() {
 }
 
 cleanup() {
-    if [ -f $cid_file ]; then
-        docker stop $(cat $cid_file)
-    fi
+    $COMPOSE rm --stop --force
 }
 
-prepare
-run_test_container &
-wait_cid
+run_test_container
 test_container
 check_result $?
 
