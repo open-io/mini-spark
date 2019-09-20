@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Hadoop: $HADOOP_VERSION"
+
 set -o nounset
 
 

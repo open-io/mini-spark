@@ -1,7 +1,7 @@
 version: '2'
 services:
   hdfs:
-    image: mini-spark/hdfs
+    image: mini-spark/hdfs:${HADOOP_VERSION}
     depends_on:
       - openioci
   openioci:
