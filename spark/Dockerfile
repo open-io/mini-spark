@@ -6,10 +6,11 @@ RUN yum install -y \
 	bash \
 	java-1.8.0-openjdk
 
-ENV SPARK_VERSION=2.4.3
+ARG SPARK_VERSION=2.4.3
 ENV HADOOP_VERSION=2.7
 
-RUN curl -sSL https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz -o spark.tgz && \
+RUN echo "Spark: ${SPARK_VERSION}" && \
+    curl -sSL https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz -o spark.tgz && \
 	tar xf spark.tgz && \
 	mv spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} spark && \
 	rm spark.tgz

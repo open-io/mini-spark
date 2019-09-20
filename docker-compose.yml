@@ -1,15 +1,13 @@
 version: '2'
 services:
   spark:
-    image: mini-spark/spark
+    image: mini-spark/spark:${SPARK_VERSION}
     ports:
       - "8080:8080"
       - "7077:7077"
 
   hdfs:
-    image: mini-spark/hdfs
-    environment:
-        - HADOOP_VERSION
+    image: mini-spark/hdfs:${HADOOP_VERSION}
     ports:
       - "9000:9000"
       - "50010:50010"
