@@ -8,6 +8,8 @@ services:
 
   hdfs:
     image: mini-spark/hdfs
+    environment:
+        - HADOOP_VERSION
     ports:
       - "9000:9000"
       - "50010:50010"
