@@ -4,8 +4,9 @@ Make it easy to launch and test Spark + HDFS jobs.
 
 ## Parameters
 
-Use HADOOP_VERSION as `make` option
+Use HADOOP_VERSION or SPARK_VERSION as `make` option
 
+Please note that at this time, HADOOP_VERSION is unused and only Spark with Hadoop 2.7.
 
 ## How to use
 
