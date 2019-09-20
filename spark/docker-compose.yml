@@ -1,7 +1,7 @@
 version: '2'
 services:
   spark:
-    image: mini-spark/spark
+    image: mini-spark/spark:${SPARK_VERSION}
     depends_on:
       - openioci
   openioci:

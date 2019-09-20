@@ -1,11 +1,12 @@
 .PHONY: build
 
 export HADOOP_VERSION ?= 2.7.7
+export SPARK_VERSION ?= 2.4.3
 
 build: build_spark build_hdfs
 
 build_spark:
-	docker build -t mini-spark/spark ./spark
+	docker build -t mini-spark/spark:${SPARK_VERSION} --build-arg SPARK_VERSION=${SPARK_VERSION} ./spark
 
 build_hdfs:
 	docker build -t mini-spark/hdfs:${HADOOP_VERSION} --build-arg HADOOP_VERSION=${HADOOP_VERSION} ./hdfs
