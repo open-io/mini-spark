@@ -13,6 +13,9 @@ RUN curl -sSL https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark
 	tar xf spark.tgz && \
 	mv spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} spark && \
 	rm spark.tgz
+RUN cd /spark/jars && \
+	curl -sSL https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk/1.7.4/aws-java-sdk-1.7.4.jar -O && \
+	curl -sSL https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/2.7.7/hadoop-aws-2.7.7.jar -O
 
 COPY scripts/ /
 
