@@ -12,7 +12,8 @@ ARG HADOOP_VERSION=2.7.7
 RUN echo "Hadoop ${HADOOP_VERSION}" && curl -sSL https://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz -o hadoop.tgz && \
 	tar xf hadoop.tgz && \
 	mv hadoop-${HADOOP_VERSION} hadoop && \
-	rm hadoop.tgz
+	rm hadoop.tgz && \
+	echo "${HADOOP_VERSION}" > /hadoop_version
 
 COPY core-site.xml /hadoop/etc/hadoop/
 COPY hdfs-site.xml /hadoop/etc/hadoop/
