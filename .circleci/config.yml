@@ -1,6 +1,11 @@
-version: 2
+version: 2.1
 jobs:
   hdfs:
+    parameters:
+      version:
+        description: "Hadoop version"
+        default: "2.7.7"
+        type: string
     docker:
       - image: circleci/buildpack-deps:bionic-scm
     steps:
@@ -8,10 +13,10 @@ jobs:
       - setup_remote_docker
       - run:
           name: Build hdfs
-          command: make build_hdfs
+          command: make HADOOP_VERSION="<< parameters.version >>" build_hdfs
       - run:
           name: Test hdfs
-          command: make test_hdfs
+          command: make HADOOP_VERSION="<< parameters.version >>" test_hdfs
   spark:
     docker:
       - image: circleci/buildpack-deps:bionic-scm
@@ -30,4 +35,7 @@ workflows:
   build:
     jobs:
       - spark
-      - hdfs
+      - hdfs:
+          version: 2.7.7
+      - hdfs:
+          version: 3.2.0
