@@ -13,8 +13,7 @@ run_test_container() {
 
 test_container() {
     SPARK_DIR="/spark"
-    SPARK_BIN="${SPARK_DIR}/bin"
-    SPARK="${SPARK_BIN}/spark-submit"
+    SPARK="${SPARK_DIR}/bin/spark-submit"
 
     SPARK_MASTER_URL="spark://127.0.0.1:7077"
 
@@ -26,7 +25,7 @@ test_container() {
 	    --conf spark.hadoop.fs.s3a.access.key=demo:demo \
 	    --conf spark.hadoop.fs.s3a.secret.key=DEMO_PASS \
 	    --conf spark.hadoop.fs.s3a.endpoint=$S3_ENDPOINT \
-	    $SPARK_DIR/examples/src/main/python/wordcount.py s3a://test/
+	    $SPARK_DIR/test.py s3a://test/
 }
 
 check_result() {
