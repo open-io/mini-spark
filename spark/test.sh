@@ -12,8 +12,21 @@ run_test_container() {
 }
 
 test_container() {
+    SPARK_DIR="/spark"
+    SPARK_BIN="${SPARK_DIR}/bin"
+    SPARK="${SPARK_BIN}/spark-submit"
+
+    SPARK_MASTER_URL="spark://127.0.0.1:7077"
+
+    S3_ENDPOINT="http://172.25.0.2:5000"
     $COMPOSE exec spark /wait.sh
     $COMPOSE exec openioci /app/.oio/roundtrip.sh
+    $COMPOSE exec spark /spark/bin/spark-submit \
+	    --master $SPARK_MASTER_URL \
+	    --conf spark.hadoop.fs.s3a.access.key=demo:demo \
+	    --conf spark.hadoop.fs.s3a.secret.key=DEMO_PASS \
+	    --conf spark.hadoop.fs.s3a.endpoint=$S3_ENDPOINT \
+	    $SPARK_DIR/examples/src/main/python/wordcount.py s3a://test/
 }
 
 check_result() {
