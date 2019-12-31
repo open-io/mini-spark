@@ -18,6 +18,7 @@ run_test_container() {
 test_container() {
     $COMPOSE exec hdfs /wait.sh
     $COMPOSE exec openioci /app/.oio/roundtrip.sh
+    $COMPOSE exec hadoop jar /dfsio.jar io.openio.hadoop.DFSIO -write
     $COMPOSE exec hdfs /hadoop/bin/hdfs dfs -copyFromLocal /hadoop/etc/ /test
     DISTCP_ARGS="-Dfs.s3a.access.key=demo:demo \
         -Dfs.s3a.secret.key=DEMO_PASS \

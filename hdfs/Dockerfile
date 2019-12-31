@@ -14,11 +14,11 @@ RUN echo "Hadoop ${HADOOP_VERSION}" && curl -sSL https://archive.apache.org/dist
 	mv hadoop-${HADOOP_VERSION} hadoop && \
 	rm hadoop.tgz && \
 	echo "${HADOOP_VERSION}" > /hadoop_version
-
 COPY core-site.xml /hadoop/etc/hadoop/
 COPY hdfs-site.xml /hadoop/etc/hadoop/
 ADD docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 COPY scripts/ /
+ADD dfsio-1.0-SNAPSHOT.jar /dfsio.jar
 ENV JAVA_HOME=/usr
 
 ENTRYPOINT ["docker-entrypoint.sh"]
