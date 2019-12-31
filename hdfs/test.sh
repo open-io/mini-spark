@@ -30,11 +30,11 @@ test_container() {
         -Dfs.s3a.fast.upload=true \
         -Dfs.s3a.fast.upload=bytebuffer"
     $COMPOSE exec hdfs /hadoop/bin/hadoop jar /dfsio.jar io.openio.hadoop.DFSIO \
-        $S3_ARGS \
+        $S3A_ARGS \
         -write \
         -baseDir s3a://test/
     $COMPOSE exec hdfs /hadoop/bin/hadoop jar /dfsio.jar io.openio.hadoop.DFSIO \
-        $S3_ARGS \
+        $S3A_ARGS \
         -read \
         -baseDir s3a://test/
     $COMPOSE exec hdfs /hadoop/bin/hadoop distcp \
