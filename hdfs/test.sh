@@ -18,9 +18,8 @@ run_test_container() {
 test_container() {
     $COMPOSE exec hdfs /wait.sh
     $COMPOSE exec openioci /app/.oio/roundtrip.sh
-    $COMPOSE exec hadoop jar /dfsio.jar io.openio.hadoop.DFSIO -write
     $COMPOSE exec hdfs /hadoop/bin/hdfs dfs -copyFromLocal /hadoop/etc/ /test
-    DISTCP_ARGS="-Dfs.s3a.access.key=demo:demo \
+    S3A_ARGS="-Dfs.s3a.access.key=demo:demo \
         -Dfs.s3a.secret.key=DEMO_PASS \
         -Dfs.s3a.endpoint=172.23.0.2:5000 \
         -Dfs.s3a.path.style.access=true \
@@ -30,11 +29,19 @@ test_container() {
         -Dfs.s3a.retry.limit=1 \
         -Dfs.s3a.fast.upload=true \
         -Dfs.s3a.fast.upload=bytebuffer"
+    $COMPOSE exec hdfs /hadoop/bin/hadoop jar /dfsio.jar io.openio.hadoop.DFSIO \
+        $S3_ARGS \
+        -write \
+        -baseDir s3a://test/
+    $COMPOSE exec hdfs /hadoop/bin/hadoop jar /dfsio.jar io.openio.hadoop.DFSIO \
+        $S3_ARGS \
+        -read \
+        -baseDir s3a://test/
     $COMPOSE exec hdfs /hadoop/bin/hadoop distcp \
-        $DISTCP_ARGS \
+        $S3A_ARGS \
         /test/ s3a://test/
     $COMPOSE exec hdfs /hadoop/bin/hadoop distcp \
-        $DISTCP_ARGS \
+        $S3A_ARGS \
         -update \
         s3a://test/ /test/
 }
