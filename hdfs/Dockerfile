@@ -20,6 +20,7 @@ ADD docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 COPY scripts/ /
 ADD dfsio-1.0-SNAPSHOT.jar /dfsio.jar
 ENV JAVA_HOME=/usr
+ENV HADOOP_CLASSPATH="/hadoop/share/hadoop/tools/lib/*"
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
