@@ -18,8 +18,8 @@ test_container() {
     SPARK_MASTER_URL="spark://127.0.0.1:7077"
 
     S3_ENDPOINT="http://172.25.0.2:5000"
-    $COMPOSE exec spark /wait.sh
-    $COMPOSE exec openioci /app/.oio/roundtrip.sh
+    $COMPOSE exec spark /wait.sh && \
+    $COMPOSE exec openioci /app/.oio/roundtrip.sh && \
     $COMPOSE exec spark /spark/bin/spark-submit \
 	    --master $SPARK_MASTER_URL \
 	    --conf spark.hadoop.fs.s3a.access.key=demo:demo \
