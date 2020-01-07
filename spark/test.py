@@ -4,6 +4,29 @@ import sys
 from operator import add
 
 from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
+
+
+def spark_session_test(sc):
+    spark = SparkSession(sc)
+
+    df = spark.read.json("people.json")
+    df.printSchema()
+
+    df.createOrReplaceTempView("people")
+    spark.sql("SELECT name FROM people WHERE AGE > 10").show()
+
+
+def spark_rrd_test(sc, test_path):
+    # create dummy rrd
+    data = [(l, l) for l in range(0, 1000)]
+    rrd = sc.parallelize(data)
+    # save rrd as text file
+    rrd.saveAsTextFile(test_path)
+
+    # load as text file
+    lines = sc.textFile(test_path)
+    print(lines.count())
 
 
 if __name__ == "__main__":
@@ -16,12 +39,5 @@ if __name__ == "__main__":
 
     test_path = sys.argv[1]
 
-    # create dummy rrd
-    data = [(l, l) for l in range(0, 1000)]
-    rrd = sc.parallelize(data)
-    # save rrd as text file
-    rrd.saveAsTextFile(test_path)
-
-    # load as text file
-    lines = sc.textFile(test_path)
-    print(lines.count())
+    spark_rrd_test(sc, test_path)
+    spark_session_test(sc)
