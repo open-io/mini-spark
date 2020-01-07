@@ -8,7 +8,7 @@ test_dir="$(realpath ${_dir})"
 COMPOSE="docker-compose --file ${test_dir}/docker-compose.yml"
 
 run_test_container() {
-    $COMPOSE up -d
+    $COMPOSE up -d --quiet-pull
 }
 
 test_container() {
