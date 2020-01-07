@@ -21,5 +21,6 @@ RUN cd /spark/jars && \
 COPY scripts/ /
 
 ADD test.py /spark
+ADD test.json /
 
 CMD ["/start.sh"]
